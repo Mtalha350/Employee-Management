@@ -36,3 +36,19 @@ export function deleteEmployee(employeeId: string): void {
 
   saveEmployees(updatedEmployees);
 }
+
+export function getEmployeeById(employeeId: string): Employee | undefined {
+  const employees = getEmployees();
+
+  return employees.find((employee) => employee.id === employeeId);
+}
+
+export function updateEmployee(updatedEmployee: Employee): void {
+  const employees = getEmployees();
+
+  const updatedEmployees = employees.map((employee) =>
+    employee.id === updatedEmployee.id ? updatedEmployee : employee,
+  );
+
+  saveEmployees(updatedEmployees);
+}

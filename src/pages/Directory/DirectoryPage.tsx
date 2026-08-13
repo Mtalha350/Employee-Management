@@ -9,8 +9,10 @@ import { deleteEmployee, getEmployees } from './services/employeeStorage';
 import type { Employee } from './types/employee.types';
 import { toast } from 'react-toastify';
 import DeleteEmployeeDialog from './components/DeleteEmployeeDialog';
+import { useNavigate } from 'react-router-dom';
 
 export default function DirectoryPage() {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState('');
   const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(
@@ -62,12 +64,13 @@ export default function DirectoryPage() {
     }
 
     deleteEmployee(employeeToDelete.id);
-
     setEmployees(getEmployees());
-
     setEmployeeToDelete(null);
-
     toast.success('Employee deleted successfully');
+  };
+
+  const handleEditEmployee = (employeeId: string) => {
+    navigate(`/employees/${employeeId}/edit`);
   };
 
   return (
@@ -90,6 +93,7 @@ export default function DirectoryPage() {
       <EmployeeTable
         employees={filteredEmployees}
         onDelete={handleDeleteEmployee}
+        onEdit={handleEditEmployee}
       />
 
       <DeleteEmployeeDialog
