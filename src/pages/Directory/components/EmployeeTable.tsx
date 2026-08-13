@@ -20,11 +20,13 @@ import EmployeeTableEmptyState from './EmployeeTableEmptyState';
 interface EmployeeTableProps {
   employees: Employee[];
   onDelete: (employeeId: string) => void;
+  onEdit: (employeeId: string) => void;
 }
 
 export default function EmployeeTable({
   employees,
   onDelete,
+  onEdit,
 }: EmployeeTableProps) {
   return (
     <TableContainer
@@ -125,14 +127,17 @@ export default function EmployeeTable({
                       <VisibilityOutlined fontSize='small' />
                     </IconButton>
 
-                    <IconButton size='small' className='text-[#d9dbe8]!'>
+                    <IconButton
+                      size='small'
+                      onClick={() => onEdit(employee.id)}
+                    >
                       <EditOutlined fontSize='small' />
                     </IconButton>
 
                     <IconButton
                       size='small'
                       onClick={() => onDelete(employee.id)}
-                      className='!text-red-500'
+                      className='text-red-500!'
                     >
                       <DeleteOutlineOutlined fontSize='small' />
                     </IconButton>

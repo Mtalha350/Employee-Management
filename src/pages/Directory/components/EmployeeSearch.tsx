@@ -32,7 +32,15 @@ export default function EmployeeSearch({
             ),
           },
         }}
-        className='w-[475px]'
+        sx={{
+          width: 475,
+          '& .MuiOutlinedInput-root': {
+            height: 42,
+            borderRadius: '12px',
+            fontSize: '14px',
+          },
+        }}
+        className='w-118.75'
       />
 
       <p className='text-[16px] text-[#9699af]'>

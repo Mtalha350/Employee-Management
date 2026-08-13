@@ -66,7 +66,7 @@ export default function DeleteEmployeeDialog({
         </p>
       </DialogContent>
 
-      <DialogActions className='!px-6 !pb-6 !pt-0'>
+      <DialogActions className='px-6! pb-6! pt-0!'>
         <Button
           onClick={onClose}
           variant='outlined'

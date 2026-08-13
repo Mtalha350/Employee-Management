@@ -1,8 +1,14 @@
 import { Button, MenuItem, TextField } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { addEmployee } from '../../Directory/services/employeeStorage';
+import {
+  addEmployee,
+  updateEmployee,
+} from '../../Directory/services/employeeStorage';
+import type { Employee } from '../../Directory/types/employee.types';
 import {
   EMPLOYEE_DEPARTMENTS,
   EMPLOYEE_STATUSES,
@@ -12,20 +18,54 @@ import {
   employeeFormSchema,
   type EmployeeFormValues,
 } from '../schemas/employeeForm.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'react-toastify';
 
-export default function EmployeeForm() {
+interface EmployeeFormProps {
+  employee?: Employee;
+}
+
+const textFieldSlotProps = {
+  input: {
+    sx: {
+      borderRadius: '12px',
+    },
+  },
+};
+
+const getDefaultValues = (employee?: Employee): EmployeeFormValues => {
+  if (!employee) {
+    return INITIAL_EMPLOYEE_FORM_VALUES;
+  }
+
+  return {
+    name: employee.name,
+    role: employee.role,
+    email: employee.email,
+    phone: employee.phone,
+    department: employee.department,
+    status: employee.status,
+    location: employee.location,
+    salary: String(employee.salary),
+    joinedOn: employee.joinedOn,
+  };
+};
+
+export default function EmployeeForm({ employee }: EmployeeFormProps) {
   const navigate = useNavigate();
+  const isEditMode = Boolean(employee);
 
-  const { control, handleSubmit } = useForm<EmployeeFormValues>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<EmployeeFormValues>({
     resolver: zodResolver(employeeFormSchema),
-    defaultValues: INITIAL_EMPLOYEE_FORM_VALUES,
+    defaultValues: getDefaultValues(employee),
+    mode: 'onChange',
   });
 
-  const onSubmit = (formValues: EmployeeFormValues) => {
-    const employee = {
-      id: crypto.randomUUID(),
+  const handleFormSubmit = (formValues: EmployeeFormValues) => {
+    const employeeData: Employee = {
+      id: employee?.id ?? crypto.randomUUID(),
       name: formValues.name.trim(),
       role: formValues.role.trim(),
       email: formValues.email.trim(),
@@ -37,16 +77,20 @@ export default function EmployeeForm() {
       joinedOn: formValues.joinedOn,
     };
 
-    addEmployee(employee);
-
-    toast.success('Employee created successfully');
+    if (isEditMode) {
+      updateEmployee(employeeData);
+      toast.success('Employee updated successfully');
+    } else {
+      addEmployee(employeeData);
+      toast.success('Employee created successfully');
+    }
 
     navigate('/');
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className='rounded-[28px] border border-[#2b2f4b] bg-[#15192f] p-10'
     >
       <div className='grid grid-cols-2 gap-6'>
@@ -57,9 +101,11 @@ export default function EmployeeForm() {
             <TextField
               {...field}
               label='Full name'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -71,9 +117,11 @@ export default function EmployeeForm() {
             <TextField
               {...field}
               label='Job title'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -86,9 +134,11 @@ export default function EmployeeForm() {
               {...field}
               label='Email'
               type='email'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -100,9 +150,11 @@ export default function EmployeeForm() {
             <TextField
               {...field}
               label='Phone'
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
+              size='small'
               fullWidth
+              error={Boolean(fieldState.error)}
+              helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -115,9 +167,11 @@ export default function EmployeeForm() {
               {...field}
               select
               label='Department'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             >
               {EMPLOYEE_DEPARTMENTS.map((department) => (
                 <MenuItem key={department} value={department}>
@@ -136,9 +190,11 @@ export default function EmployeeForm() {
               {...field}
               select
               label='Status'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             >
               {EMPLOYEE_STATUSES.map((status) => (
                 <MenuItem key={status} value={status}>
@@ -156,9 +212,11 @@ export default function EmployeeForm() {
             <TextField
               {...field}
               label='Location'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -171,9 +229,11 @@ export default function EmployeeForm() {
               {...field}
               label='Annual salary (USD)'
               type='number'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              slotProps={textFieldSlotProps}
             />
           )}
         />
@@ -186,10 +246,12 @@ export default function EmployeeForm() {
               {...field}
               label='Joined on'
               type='date'
+              size='small'
               fullWidth
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               slotProps={{
+                ...textFieldSlotProps,
                 inputLabel: {
                   shrink: true,
                 },
@@ -203,16 +265,17 @@ export default function EmployeeForm() {
         <Button
           type='submit'
           variant='contained'
-          className='!rounded-[15px] !bg-gradient-to-r !from-[#6961ff] !to-[#b278f4] !px-6 !py-3 !text-[16px] !font-semibold !normal-case'
+          disabled={!isValid}
+          className='h-10! rounded-[15px]! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-6! py-1! text-[14px]! font-semibold! normal-case!'
         >
-          Create employee
+          {isEditMode ? 'Save changes' : 'Create employee'}
         </Button>
 
         <Button
           type='button'
           variant='outlined'
           onClick={() => navigate('/')}
-          className='!rounded-[15px] !border-[#2b2f4b] !px-6 !py-3 !text-[16px] !font-semibold !normal-case'
+          className='h-10! rounded-[15px]! border-[#2b2f4b]! px-6! py-3! text-[16px]! font-semibold! normal-case!'
         >
           Cancel
         </Button>

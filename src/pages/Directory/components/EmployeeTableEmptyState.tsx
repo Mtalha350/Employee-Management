@@ -13,7 +13,7 @@ export default function EmployeeTableEmptyState({
       <TableCell
         colSpan={6}
         align='center'
-        className='!border-[#2b2f4b] !py-16'
+        className='border-[#2b2f4b]! py-16!'
       >
         <div className='flex flex-col items-center'>
           <SearchOff
