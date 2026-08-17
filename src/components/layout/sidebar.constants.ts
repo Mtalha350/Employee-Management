@@ -1,21 +1,14 @@
-import { GridView, PersonAdd } from '@mui/icons-material';
-import type { SvgIconComponent } from '@mui/icons-material';
+import { GridViewOutlined, PersonAddOutlined } from '@mui/icons-material';
 
-export interface NavigationItem {
-  label: string;
-  path: string;
-  icon: SvgIconComponent;
-}
-
-export const NAVIGATION_ITEMS: NavigationItem[] = [
+export const navigationItems = [
   {
-    label: 'Directory',
+    label: 'Employee directory',
     path: '/',
-    icon: GridView,
+    icon: GridViewOutlined,
   },
   {
     label: 'Add employee',
     path: '/employees/add',
-    icon: PersonAdd,
+    icon: PersonAddOutlined,
   },
 ];

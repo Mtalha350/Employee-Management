@@ -18,7 +18,7 @@ export default function EditEmployeePage() {
 
   return (
     <div className='min-h-screen px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10'>
-      <div className='mx-auto w-full max-w-[1130px]'>
+      <div className='mx-auto w-full max-w-282.5'>
         {/* Page header */}
         <div className='mb-6 sm:mb-8'>
           <p className='text-xs font-medium text-[#9699af] sm:text-sm'>
