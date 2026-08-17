@@ -2,20 +2,22 @@ import EmployeeForm from './components/EmployeeForm';
 
 export default function AddEmployeePage() {
   return (
-    <div className='min-h-screen px-10 py-10'>
-      <div className='mx-auto max-w-282.5'>
-        <h1 className='text-[52px] font-semibold tracking-[-2px] text-[#7568ff]'>
-          Add employee
-        </h1>
+    <main className='min-h-screen bg-[#0f1328] px-4 py-20 sm:px-6 md:px-8 md:py-10 lg:px-10'>
+      <div className='mx-auto w-full max-w-[1130px]'>
+        <div>
+          <h1 className='text-[30px] font-semibold leading-tight tracking-[-1px] text-[#7568ff] sm:text-[35px] md:text-[40px] md:tracking-[-2px]'>
+            Add employee
+          </h1>
 
-        <p className='mt-3 text-[20px] text-[#9699af]'>
-          Fill in the details to create a new record.
-        </p>
+          <p className='mt-1 text-sm text-[#9699af] sm:text-[15px] md:text-[16px]'>
+            Fill in the details to create a new record.
+          </p>
+        </div>
 
-        <div className='mt-12'>
+        <div className='mt-6 sm:mt-8'>
           <EmployeeForm />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -17,22 +17,25 @@ export default function EditEmployeePage() {
   }
 
   return (
-    <div className='min-h-screen px-10 py-10'>
-      <div className='mb-8'>
-        <p className='text-sm font-medium text-[#9699af]'>
-          Employee management
-        </p>
+    <div className='min-h-screen px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10'>
+      <div className='mx-auto w-full max-w-[1130px]'>
+        {/* Page header */}
+        <div className='mb-6 sm:mb-8'>
+          <p className='text-xs font-medium text-[#9699af] sm:text-sm'>
+            Employee management
+          </p>
 
-        <h1 className='mt-2 text-[32px] font-semibold text-[#f4f5fb]'>
-          Edit employee
-        </h1>
+          <h1 className='mt-2 text-[28px] font-semibold leading-tight tracking-[-1px] text-[#f4f5fb] sm:text-[32px]'>
+            Edit employee
+          </h1>
 
-        <p className='mt-2 text-[16px] text-[#9699af]'>
-          Update employee information and save your changes.
-        </p>
+          <p className='mt-2 text-sm leading-6 text-[#9699af] sm:text-base'>
+            Update employee information and save your changes.
+          </p>
+        </div>
+
+        <EmployeeForm employee={employee} />
       </div>
-
-      <EmployeeForm employee={employee} />
     </div>
   );
 }

@@ -23,14 +23,16 @@ export default function DeleteEmployeeDialog({
     <Dialog
       open={open}
       onClose={onClose}
+      fullWidth
+      maxWidth='sm'
       slotProps={{
         paper: {
           sx: (theme) => ({
-            width: '100%',
+            width: 'calc(100% - 32px)',
             maxWidth: 460,
-            margin: 2,
-            padding: 1,
-            borderRadius: '24px',
+            margin: { xs: '16px', sm: '24px' },
+            padding: { xs: 0, sm: 1 },
+            borderRadius: { xs: '20px', sm: '24px' },
             border: `1px solid ${theme.palette.divider}`,
             backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
@@ -41,9 +43,15 @@ export default function DeleteEmployeeDialog({
     >
       <DialogTitle
         sx={(theme) => ({
-          padding: '24px 24px 12px',
+          padding: {
+            xs: '20px 20px 10px',
+            sm: '24px 24px 12px',
+          },
           color: theme.palette.text.primary,
-          fontSize: '20px',
+          fontSize: {
+            xs: '18px',
+            sm: '20px',
+          },
           fontWeight: 600,
         })}
       >
@@ -52,28 +60,56 @@ export default function DeleteEmployeeDialog({
 
       <DialogContent
         sx={(theme) => ({
-          padding: '8px 24px 24px',
+          padding: {
+            xs: '8px 20px 20px',
+            sm: '8px 24px 24px',
+          },
           color: theme.palette.text.secondary,
         })}
       >
-        <p className='text-[15px] leading-6'>
+        <p className='text-[14px] leading-6 sm:text-[15px]'>
           Are you sure you want to delete{' '}
-          <span className='font-semibold text-[#f4f5fb]'>{employeeName}</span>?
+          <span className='break-words font-semibold text-[#f4f5fb]'>
+            {employeeName}
+          </span>
+          ?
         </p>
 
-        <p className='mt-2 text-[14px] text-[#9699af]'>
+        <p className='mt-2 text-[13px] text-[#9699af] sm:text-[14px]'>
           This action cannot be undone.
         </p>
       </DialogContent>
 
-      <DialogActions className='px-6! pb-6! pt-0!'>
+      <DialogActions
+        sx={{
+          padding: {
+            xs: '0 20px 20px',
+            sm: '0 24px 24px',
+          },
+          gap: 1.5,
+          flexDirection: {
+            xs: 'column-reverse',
+            sm: 'row',
+          },
+
+          '& > button': {
+            width: {
+              xs: '100%',
+              sm: 'auto',
+            },
+          },
+        }}
+      >
         <Button
           onClick={onClose}
           variant='outlined'
           sx={(theme) => ({
             minHeight: 44,
             borderRadius: '12px',
-            paddingInline: '20px',
+            paddingInline: {
+              xs: '20px',
+              sm: '24px',
+            },
             textTransform: 'none',
             fontWeight: 600,
             color: theme.palette.text.primary,
@@ -94,7 +130,10 @@ export default function DeleteEmployeeDialog({
           sx={{
             minHeight: 44,
             borderRadius: '12px',
-            paddingInline: '20px',
+            paddingInline: {
+              xs: '20px',
+              sm: '24px',
+            },
             textTransform: 'none',
             fontWeight: 600,
             backgroundColor: '#ef4444',

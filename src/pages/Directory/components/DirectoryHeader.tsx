@@ -6,13 +6,13 @@ const DirectoryHeader = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='flex items-start justify-between'>
+    <div className='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>
       <div>
-        <h1 className='text-[35px] font-semibold leading-tight tracking-[-1.5px] text-[#7568ff]'>
+        <h1 className='text-[28px] font-semibold leading-tight tracking-[-1px] text-[#7568ff] sm:text-[32px] lg:text-[35px] lg:tracking-[-1.5px]'>
           Employee directory
         </h1>
 
-        <p className='text-[16px] text-[#9699af]'>
+        <p className='mt-1 text-[14px] leading-6 text-[#9699af] sm:text-[16px]'>
           Manage your team roster — everything is stored locally in your
           browser.
         </p>
@@ -22,7 +22,7 @@ const DirectoryHeader = () => {
         variant='contained'
         startIcon={<Add />}
         onClick={() => navigate('/employees/add')}
-        className='h-10! rounded-xl! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-4! text-[14px]! font-semibold! normal-case! text-white! shadow-lg! hover:opacity-90!'
+        className='!h-10 !w-full !rounded-xl !bg-linear-to-r !from-[#6961ff] !to-[#b278f4] !px-4 !text-[14px] !font-semibold !normal-case !text-white !shadow-lg hover:!opacity-90 sm:!w-auto'
       >
         Add employee
       </Button>
