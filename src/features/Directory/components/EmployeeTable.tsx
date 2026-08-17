@@ -22,28 +22,49 @@ interface EmployeeTableProps {
   employees: Employee[];
   onDelete: (employeeId: string) => void;
   onEdit: (employeeId: string) => void;
+  onView: (employeeId: string) => void;
 }
 
-const tableHeaderClassName =
-  'border-b-0! px-4! py-4! text-[12px]! font-medium! uppercase! tracking-wide! text-[#9296ad]! sm:px-6!';
+const HEADER_HEIGHT = 56;
+const ROW_HEIGHT = 76;
+const VISIBLE_ROWS = 7;
 
-const tableCellClassName =
-  'border-[#2b2f4b]! px-4! py-4! text-[14px]! sm:px-6! sm:py-5!';
+const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
+
+const tableHeaderClassName =
+  'border-b-0! bg-[#15192f]! px-4! text-[12px]! font-medium! uppercase! tracking-wide! text-[#9296ad]! sm:px-6!';
+
+const tableCellClassName = 'border-[#2b2f4b]! px-4! text-[14px]! sm:px-6!';
 
 export default function EmployeeTable({
   employees,
   onDelete,
   onEdit,
+  onView,
 }: EmployeeTableProps) {
   return (
     <TableContainer
       component={Paper}
       elevation={0}
-      className='mt-6! w-full! overflow-x-auto! rounded-[20px]! border! border-[#2b2f4b]! bg-[#15192f]!'
+      className='mt-6! w-full! overflow-auto! rounded-[20px]! border! border-[#2b2f4b]! bg-[#15192f]!'
+      sx={{
+        height: TABLE_HEIGHT,
+      }}
     >
-      <Table sx={{ minWidth: 850 }} aria-label='Employee directory table'>
+      <Table
+        stickyHeader
+        aria-label='Employee directory table'
+        sx={{
+          minWidth: 850,
+        }}
+      >
         <TableHead>
-          <TableRow className='border-b! border-[#2b2f4b]!'>
+          <TableRow
+            sx={{
+              height: HEADER_HEIGHT,
+            }}
+            className='border-b! border-[#2b2f4b]!'
+          >
             <TableCell className={tableHeaderClassName}>Employee</TableCell>
 
             <TableCell className={tableHeaderClassName}>Department</TableCell>
@@ -66,11 +87,17 @@ export default function EmployeeTable({
               <TableRow
                 key={employee.id}
                 hover
-                className='transition-colors hover:!bg-[#191d36]!'
+                sx={{
+                  height: ROW_HEIGHT,
+                  '&:hover': {
+                    backgroundColor: '#191d36',
+                  },
+                }}
               >
+                {/* Employee */}
                 <TableCell className={tableCellClassName}>
-                  <div className='flex min-w-[200px] items-center gap-3'>
-                    <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-[#6e64ff] to-[#a87aff] text-xs font-semibold text-white sm:h-10 sm:w-10 sm:text-sm'>
+                  <div className='flex min-w-50 items-center gap-3'>
+                    <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-[#6e64ff] to-[#a87aff] text-sm font-semibold text-white'>
                       {getEmployeeInitials(employee.name)}
                     </div>
 
@@ -126,7 +153,8 @@ export default function EmployeeTable({
                     <IconButton
                       size='small'
                       aria-label={`View ${employee.name}`}
-                      className='text-[#d9dbe8]!'
+                      onClick={() => onView(employee.id)}
+                      sx={{ color: '#d9dbe8' }}
                     >
                       <VisibilityOutlined fontSize='small' />
                     </IconButton>
@@ -135,7 +163,7 @@ export default function EmployeeTable({
                       size='small'
                       aria-label={`Edit ${employee.name}`}
                       onClick={() => onEdit(employee.id)}
-                      className='text-[#d9dbe8]!'
+                      sx={{ color: '#d9dbe8' }}
                     >
                       <EditOutlined fontSize='small' />
                     </IconButton>
@@ -144,7 +172,7 @@ export default function EmployeeTable({
                       size='small'
                       aria-label={`Delete ${employee.name}`}
                       onClick={() => onDelete(employee.id)}
-                      className='text-red-500!'
+                      sx={{ color: '#ef4444' }}
                     >
                       <DeleteOutlineOutlined fontSize='small' />
                     </IconButton>

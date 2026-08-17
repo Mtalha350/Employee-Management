@@ -22,7 +22,7 @@ const DirectoryHeader = () => {
         variant='contained'
         startIcon={<Add />}
         onClick={() => navigate('/employees/add')}
-        className='!h-10 !w-full !rounded-xl !bg-linear-to-r !from-[#6961ff] !to-[#b278f4] !px-4 !text-[14px] !font-semibold !normal-case !text-white !shadow-lg hover:!opacity-90 sm:!w-auto'
+        className='h-10! w-full! rounded-xl! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-4! text-[14px]! font-semibold! normal-case! text-white! shadow-lg! hover:opacity-90! sm:w-auto!'
       >
         Add employee
       </Button>

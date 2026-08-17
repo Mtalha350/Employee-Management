@@ -91,7 +91,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className='rounded-[16px] border border-[#2b2f4b] bg-[#15192f] p-5 sm:rounded-[20px] sm:p-6 lg:p-10'
+      className='rounded-2xl border border-[#2b2f4b] bg-[#15192f] p-5 sm:rounded-[20px] sm:p-6 lg:p-10'
     >
       <div className='grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6'>
         <Controller
@@ -250,6 +250,12 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={{
+                '& input::-webkit-calendar-picker-indicator': {
+                  filter: 'invert(1)',
+                  cursor: 'pointer',
+                },
+              }}
               slotProps={{
                 ...textFieldSlotProps,
                 inputLabel: {
@@ -266,7 +272,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
           type='submit'
           variant='contained'
           disabled={!isValid}
-          className='h-10! w-full! rounded-[12px]! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
+          className='h-10! w-full! rounded-xl! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
         >
           {isEditMode ? 'Save changes' : 'Create employee'}
         </Button>
@@ -275,7 +281,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
           type='button'
           variant='outlined'
           onClick={() => navigate('/')}
-          className='h-10! w-full! rounded-[12px]! border-[#2b2f4b]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
+          className='h-10! w-full! rounded-xl! border-[#2b2f4b]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
         >
           Cancel
         </Button>

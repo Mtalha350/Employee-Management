@@ -23,6 +23,10 @@ export default function DirectoryPage() {
     setEmployees(getEmployees());
   }, []);
 
+  const handleViewEmployee = (employeeId: string) => {
+    navigate(`/employees/${employeeId}`);
+  };
+
   const filteredEmployees = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -103,6 +107,7 @@ export default function DirectoryPage() {
           employees={filteredEmployees}
           onDelete={handleDeleteEmployee}
           onEdit={handleEditEmployee}
+          onView={handleViewEmployee}
         />
       </div>
 

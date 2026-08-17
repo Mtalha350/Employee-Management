@@ -69,7 +69,7 @@ export default function DeleteEmployeeDialog({
       >
         <p className='text-[14px] leading-6 sm:text-[15px]'>
           Are you sure you want to delete{' '}
-          <span className='break-words font-semibold text-[#f4f5fb]'>
+          <span className='wrap-break-word font-semibold text-[#f4f5fb]'>
             {employeeName}
           </span>
           ?
