@@ -1,75 +1,123 @@
-# React + TypeScript + Vite
+# Employee Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive **Employee Management Application** built with **React, TypeScript, Tailwind CSS, and Material UI (MUI)**.
 
-Currently, two official plugins are available:
+This project was developed as part of **Assignment No. 4 — Week 4: React Fundamentals & Component Design** for the **Frontend Engineering Internship**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Employee listing
+- Add employee
+- Edit employee
+- Delete employee with confirmation
+- Employee details page
+- Search employees
+- Form validation using React Hook Form & Zod
+- React Router with dynamic routes
+- Reusable UI components
+- Responsive design
+- Local Storage persistence
+- Toast notifications
+- Empty state handling
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ⚛️ React Concepts Covered
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Components and Props
+- State Management with `useState`
+- Side Effects with `useEffect`
+- Memoization with `useMemo`
+- Conditional Rendering
+- Lists and Keys
+- Parent-to-Child Communication
+- Callback Props
+- Component Reusability
+- React Router
+- Route Parameters
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Technologies Used
 
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Material UI (MUI)
+- React Hook Form
+- Zod
+- React Router DOM
+- React Toastify
+- Local Storage
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/
+│   └── ui/
+│
+├── features/
+│   ├── Directory/
+│   ├── AddEmployee/
+│   ├── EditEmployee/
+│   └── EmployeeDetail/
+│
+├── layouts/
+├── App.tsx
+└── main.tsx
+
+---
+
+## 💻 Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/Mtalha350/Employee-Management.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Navigate to the project
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd Employee-Management
 ```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Run the application
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+---
+
+## 📌 Assignment Details
+
+**Assignment No:** 4  
+**Week:** 4  
+**Assignment:** React Employee Management Application — Part 1  
+**Program:** Frontend Engineering Internship  
+**Trainer & Program Manager:** Maheen Nasir  
+
+---
+
+## 📄 Acknowledgement
+
+This project was developed for educational purposes as part of **Assignment No. 4 — Week 4: React Fundamentals & Component Design** during the **Frontend Engineering Internship**.
