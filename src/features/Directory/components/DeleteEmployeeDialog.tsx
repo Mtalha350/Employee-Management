@@ -1,10 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
 interface DeleteEmployeeDialogProps {
   open: boolean;
@@ -27,99 +21,36 @@ export default function DeleteEmployeeDialog({
       maxWidth='sm'
       slotProps={{
         paper: {
-          sx: (theme) => ({
-            width: 'calc(100% - 32px)',
-            maxWidth: 460,
-            margin: { xs: '16px', sm: '24px' },
-            padding: { xs: 0, sm: 1 },
-            borderRadius: { xs: '20px', sm: '24px' },
-            border: `1px solid ${theme.palette.divider}`,
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-            boxShadow: '0 24px 70px rgba(0, 0, 0, 0.45)',
-          }),
+          className:
+            'w-[calc(100%-32px)]! max-w-[460px]! rounded-[20px]! border! border-app-divider! bg-app-paper! text-app-primary-text! sm:rounded-[24px]!',
         },
       }}
     >
-      <DialogTitle
-        sx={(theme) => ({
-          padding: {
-            xs: '20px 20px 10px',
-            sm: '24px 24px 12px',
-          },
-          color: theme.palette.text.primary,
-          fontSize: {
-            xs: '18px',
-            sm: '20px',
-          },
-          fontWeight: 600,
-        })}
-      >
-        Delete employee?
-      </DialogTitle>
+      <div className='px-5 pt-5 sm:px-6 sm:pt-6'>
+        <h2 className='text-app-primary-text text-[18px] font-semibold sm:text-[20px]'>
+          Delete employee?
+        </h2>
+      </div>
 
-      <DialogContent
-        sx={(theme) => ({
-          padding: {
-            xs: '8px 20px 20px',
-            sm: '8px 24px 24px',
-          },
-          color: theme.palette.text.secondary,
-        })}
-      >
-        <p className='text-[14px] leading-6 sm:text-[15px]'>
+      <DialogContent className='px-5! pb-5! pt-2! sm:px-6! sm:pb-6!'>
+        <p className='text-app-secondary-text text-sm leading-relaxed sm:text-[15px]'>
           Are you sure you want to delete{' '}
-          <span className='wrap-break-word font-semibold text-[#f4f5fb]'>
+          <span className='text-app-primary-text break-all font-semibold'>
             {employeeName}
           </span>
           ?
         </p>
 
-        <p className='mt-2 text-[13px] text-[#9699af] sm:text-[14px]'>
+        <p className='text-app-secondary-text mt-1 text-[13px] sm:text-sm'>
           This action cannot be undone.
         </p>
       </DialogContent>
 
-      <DialogActions
-        sx={{
-          padding: {
-            xs: '0 20px 20px',
-            sm: '0 24px 24px',
-          },
-          gap: 1.5,
-          flexDirection: {
-            xs: 'column-reverse',
-            sm: 'row',
-          },
-
-          '& > button': {
-            width: {
-              xs: '100%',
-              sm: 'auto',
-            },
-          },
-        }}
-      >
+      <DialogActions className='flex! flex-col-reverse! gap-3! px-5! pb-5! sm:flex-row! sm:gap-3! sm:px-6! sm:pb-6!'>
         <Button
           onClick={onClose}
           variant='outlined'
-          sx={(theme) => ({
-            minHeight: 44,
-            borderRadius: '12px',
-            paddingInline: {
-              xs: '20px',
-              sm: '24px',
-            },
-            textTransform: 'none',
-            fontWeight: 600,
-            color: theme.palette.text.primary,
-            borderColor: theme.palette.divider,
-
-            '&:hover': {
-              borderColor: theme.palette.text.secondary,
-              backgroundColor: theme.palette.action.hover,
-            },
-          })}
+          className='border-app-divider text-app-primary-text h-11! w-full! rounded-xl! px-5! text-sm! font-semibold! normal-case! hover:border-app-secondary-text! hover:bg-app-background! sm:w-auto! sm:px-6!'
         >
           Cancel
         </Button>
@@ -127,21 +58,8 @@ export default function DeleteEmployeeDialog({
         <Button
           onClick={onConfirm}
           variant='contained'
-          sx={{
-            minHeight: 44,
-            borderRadius: '12px',
-            paddingInline: {
-              xs: '20px',
-              sm: '24px',
-            },
-            textTransform: 'none',
-            fontWeight: 600,
-            backgroundColor: '#ef4444',
-
-            '&:hover': {
-              backgroundColor: '#dc2626',
-            },
-          }}
+          color='error'
+          className='h-11! w-full! rounded-xl! px-5! text-sm! font-semibold! normal-case! sm:w-auto! sm:px-6!'
         >
           Delete
         </Button>

@@ -13,21 +13,16 @@ export default function EmployeeTableEmptyState({
       <TableCell
         colSpan={6}
         align='center'
-        className='border-[#2b2f4b]! py-16!'
+        className='border-app-divider! py-8!'
       >
         <div className='flex flex-col items-center'>
-          <SearchOff
-            sx={{
-              fontSize: 42,
-              color: 'text.secondary',
-            }}
-          />
+          <SearchOff className='text-[42px]! text-app-secondary-text!' />
 
-          <p className='mt-4 text-[18px] font-semibold text-[#f4f5fb]'>
+          <p className='mt-4 text-[18px] font-semibold text-app-primary-text'>
             No employees found
           </p>
 
-          <p className='mt-2 text-[14px] text-[#9699af]'>{message}</p>
+          <p className='mt-2 text-[14px] text-app-secondary-text'>{message}</p>
         </div>
       </TableCell>
     </TableRow>

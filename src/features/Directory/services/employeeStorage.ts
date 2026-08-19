@@ -1,54 +1,29 @@
 import type { Employee } from '../types/employee.types';
-import { employeeData } from '../data/employee.data';
 
-const EMPLOYEE_STORAGE_KEY = 'employee-management:employees';
+const EMPLOYEES_STORAGE_KEY = 'employee-management:employees';
 
 export function getEmployees(): Employee[] {
-  const storedEmployees = localStorage.getItem(EMPLOYEE_STORAGE_KEY);
-
-  if (!storedEmployees) {
-    return employeeData;
-  }
-
   try {
-    return JSON.parse(storedEmployees) as Employee[];
+    const storedEmployees = localStorage.getItem(EMPLOYEES_STORAGE_KEY);
+
+    if (!storedEmployees) {
+      return [];
+    }
+
+    const parsedEmployees = JSON.parse(storedEmployees);
+
+    if (!Array.isArray(parsedEmployees)) {
+      console.warn('Invalid employees data in localStorage');
+
+      return [];
+    }
+
+    return parsedEmployees as Employee[];
   } catch {
-    return employeeData;
+    return [];
   }
 }
 
-export function saveEmployees(employees: Employee[]): void {
-  localStorage.setItem(EMPLOYEE_STORAGE_KEY, JSON.stringify(employees));
-}
-
-export function addEmployee(employee: Employee): void {
-  const employees = getEmployees();
-
-  saveEmployees([employee, ...employees]);
-}
-
-export function deleteEmployee(employeeId: string): void {
-  const employees = getEmployees();
-
-  const updatedEmployees = employees.filter(
-    (employee) => employee.id !== employeeId,
-  );
-
-  saveEmployees(updatedEmployees);
-}
-
-export function getEmployeeById(employeeId: string): Employee | undefined {
-  const employees = getEmployees();
-
-  return employees.find((employee) => employee.id === employeeId);
-}
-
-export function updateEmployee(updatedEmployee: Employee): void {
-  const employees = getEmployees();
-
-  const updatedEmployees = employees.map((employee) =>
-    employee.id === updatedEmployee.id ? updatedEmployee : employee,
-  );
-
-  saveEmployees(updatedEmployees);
+export function saveEmployees(employees: Employee[]) {
+  localStorage.setItem(EMPLOYEES_STORAGE_KEY, JSON.stringify(employees));
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -7,114 +7,111 @@ import DirectoryHeader from './components/DirectoryHeader';
 import EmployeeSearch from './components/EmployeeSearch';
 import EmployeeStats from './components/EmployeeStats';
 import EmployeeTable from './components/EmployeeTable';
-import { deleteEmployee, getEmployees } from './services/employeeStorage';
-import type { Employee } from './types/employee.types';
+
+import {
+  deleteEmployee,
+  setDepartmentFilter,
+  setSearch,
+  setStatusFilter,
+} from '../../store/employees/employeeSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function DirectoryPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [search, setSearch] = useState('');
-  const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(
+  const { employees, search, departmentFilter, statusFilter } = useAppSelector(
+    (state) => state.employees,
+  );
+
+  const [employeeToDeleteId, setEmployeeToDeleteId] = useState<string | null>(
     null,
   );
 
-  useEffect(() => {
-    setEmployees(getEmployees());
-  }, []);
+  const employeeToDelete = useMemo(
+    () =>
+      employees.find((employee) => employee.id === employeeToDeleteId) ?? null,
+    [employees, employeeToDeleteId],
+  );
 
-  const handleViewEmployee = (employeeId: string) => {
-    navigate(`/employees/${employeeId}`);
-  };
+  const departments = useMemo(
+    () => [...new Set(employees.map((employee) => employee.department))].sort(),
+    [employees],
+  );
 
   const filteredEmployees = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    if (!query) {
-      return employees;
-    }
+    return employees.filter((employee) => {
+      const matchesSearch =
+        !query ||
+        [
+          employee.name,
+          employee.role,
+          employee.department,
+          employee.location,
+          employee.email,
+        ].some((value) => value.toLowerCase().includes(query));
 
-    return employees.filter((employee) =>
-      [
-        employee.name,
-        employee.role,
-        employee.department,
-        employee.location,
-      ].some((value) => value.toLowerCase().includes(query)),
-    );
-  }, [employees, search]);
+      const matchesDepartment =
+        departmentFilter === 'All' || employee.department === departmentFilter;
 
-  const departments = useMemo(
-    () => new Set(employees.map((employee) => employee.department)).size,
-    [employees],
-  );
+      const matchesStatus =
+        statusFilter === 'All' || employee.status === statusFilter;
+
+      return matchesSearch && matchesDepartment && matchesStatus;
+    });
+  }, [employees, search, departmentFilter, statusFilter]);
 
   const annualPayroll = useMemo(
     () => employees.reduce((total, employee) => total + employee.salary, 0),
     [employees],
   );
 
-  const handleDeleteEmployee = (employeeId: string) => {
-    const employee = employees.find((item) => item.id === employeeId);
-
-    if (!employee) {
-      return;
-    }
-
-    setEmployeeToDelete(employee);
-  };
-
   const handleConfirmDelete = () => {
-    if (!employeeToDelete) {
-      return;
-    }
+    if (!employeeToDeleteId) return;
 
-    deleteEmployee(employeeToDelete.id);
-
-    setEmployees(getEmployees());
-    setEmployeeToDelete(null);
+    dispatch(deleteEmployee(employeeToDeleteId));
+    setEmployeeToDeleteId(null);
 
     toast.success('Employee deleted successfully');
   };
 
-  const handleCloseDeleteDialog = () => {
-    setEmployeeToDelete(null);
-  };
-
-  const handleEditEmployee = (employeeId: string) => {
-    navigate(`/employees/${employeeId}/edit`);
-  };
-
   return (
-    <main className='min-h-screen bg-[#0f1328] px-4 py-20 sm:px-6 md:px-8 md:py-10 lg:px-10'>
+    <main className='min-h-screen bg-app-background px-4 py-20 text-app-primary-text transition-colors duration-200 sm:px-6 md:px-8 md:py-10 lg:px-10'>
       <div className='mx-auto w-full max-w-[1600px]'>
         <DirectoryHeader />
 
         <EmployeeStats
           headcount={employees.length}
-          departments={departments}
+          departments={departments.length}
           annualPayroll={annualPayroll}
         />
 
         <EmployeeSearch
-          value={search}
-          onChange={setSearch}
+          search={search}
+          department={departmentFilter}
+          status={statusFilter}
+          departments={departments}
           resultCount={filteredEmployees.length}
           totalCount={employees.length}
+          onSearchChange={(value) => dispatch(setSearch(value))}
+          onDepartmentChange={(value) => dispatch(setDepartmentFilter(value))}
+          onStatusChange={(value) => dispatch(setStatusFilter(value))}
         />
 
         <EmployeeTable
           employees={filteredEmployees}
-          onDelete={handleDeleteEmployee}
-          onEdit={handleEditEmployee}
-          onView={handleViewEmployee}
+          onDelete={(employeeId) => setEmployeeToDeleteId(employeeId)}
+          onEdit={(employeeId) => navigate(`/employees/${employeeId}/edit`)}
+          onView={(employeeId) => navigate(`/employees/${employeeId}`)}
         />
       </div>
 
       <DeleteEmployeeDialog
         open={Boolean(employeeToDelete)}
         employeeName={employeeToDelete?.name}
-        onClose={handleCloseDeleteDialog}
+        onClose={() => setEmployeeToDeleteId(null)}
         onConfirm={handleConfirmDelete}
       />
     </main>

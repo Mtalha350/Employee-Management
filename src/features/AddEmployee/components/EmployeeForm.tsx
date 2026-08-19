@@ -4,10 +4,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  addEmployee,
-  updateEmployee,
-} from '../../Directory/services/employeeStorage';
 import type { Employee } from '../../Directory/types/employee.types';
 import {
   EMPLOYEE_DEPARTMENTS,
@@ -19,9 +15,51 @@ import {
   type EmployeeFormValues,
 } from '../schemas/employeeForm.schema';
 
+import {
+  addEmployee,
+  updateEmployee,
+} from '../../../store/employees/employeeSlice';
+import { useAppDispatch } from '../../../store/hooks';
+
 interface EmployeeFormProps {
   employee?: Employee;
 }
+
+const textFieldSx = (theme: any) => ({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '12px',
+    color: theme.palette.text.primary,
+
+    '& fieldset': {
+      borderColor: theme.palette.divider,
+    },
+
+    '&:hover fieldset': {
+      borderColor: theme.palette.text.secondary,
+    },
+
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.primary.main,
+      borderWidth: '1px',
+    },
+  },
+
+  '& .MuiInputLabel-root': {
+    color: theme.palette.text.secondary,
+  },
+
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: theme.palette.primary.main,
+  },
+
+  '& .MuiInputBase-input': {
+    color: theme.palette.text.primary,
+  },
+
+  '& .MuiFormHelperText-root': {
+    marginLeft: 0,
+  },
+});
 
 const textFieldSlotProps = {
   input: {
@@ -51,6 +89,8 @@ const getDefaultValues = (employee?: Employee): EmployeeFormValues => {
 
 export default function EmployeeForm({ employee }: EmployeeFormProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const isEditMode = Boolean(employee);
 
   const {
@@ -78,10 +118,10 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
     };
 
     if (isEditMode) {
-      updateEmployee(employeeData);
+      dispatch(updateEmployee(employeeData));
       toast.success('Employee updated successfully');
     } else {
-      addEmployee(employeeData);
+      dispatch(addEmployee(employeeData));
       toast.success('Employee created successfully');
     }
 
@@ -91,9 +131,9 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className='rounded-2xl border border-[#2b2f4b] bg-[#15192f] p-5 sm:rounded-[20px] sm:p-6 lg:p-10'
+      className='rounded-[20px] border border-app-divider bg-app-paper p-5 sm:p-6 md:p-8 lg:p-10'
     >
-      <div className='grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6'>
+      <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6'>
         <Controller
           name='name'
           control={control}
@@ -105,6 +145,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -121,6 +162,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -138,6 +180,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -154,6 +197,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -171,6 +215,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             >
               {EMPLOYEE_DEPARTMENTS.map((department) => (
@@ -194,6 +239,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             >
               {EMPLOYEE_STATUSES.map((status) => (
@@ -216,6 +262,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -233,6 +280,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
+              sx={textFieldSx}
               slotProps={textFieldSlotProps}
             />
           )}
@@ -250,12 +298,7 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
               fullWidth
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
-              sx={{
-                '& input::-webkit-calendar-picker-indicator': {
-                  filter: 'invert(1)',
-                  cursor: 'pointer',
-                },
-              }}
+              sx={textFieldSx}
               slotProps={{
                 ...textFieldSlotProps,
                 inputLabel: {
@@ -267,23 +310,39 @@ export default function EmployeeForm({ employee }: EmployeeFormProps) {
         />
       </div>
 
-      <div className='mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4'>
-        <Button
-          type='submit'
-          variant='contained'
-          disabled={!isValid}
-          className='h-10! w-full! rounded-xl! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
-        >
-          {isEditMode ? 'Save changes' : 'Create employee'}
-        </Button>
-
+      <div className='mt-6 flex flex-col-reverse gap-3 sm:mt-8 sm:flex-row sm:gap-4'>
         <Button
           type='button'
           variant='outlined'
           onClick={() => navigate('/')}
-          className='h-10! w-full! rounded-xl! border-[#2b2f4b]! px-6! py-1! text-[14px]! font-semibold! normal-case! sm:w-auto!'
+          sx={{
+            borderRadius: '15px',
+            px: 3,
+            fontSize: '14px',
+            fontWeight: 600,
+            textTransform: 'none',
+            color: 'text.primary',
+            borderColor: 'divider',
+          }}
+          className='h-10! w-full! sm:w-auto!'
         >
           Cancel
+        </Button>
+
+        <Button
+          type='submit'
+          variant='contained'
+          disabled={!isValid}
+          sx={{
+            borderRadius: '12px',
+            px: 3,
+            fontSize: '14px',
+            fontWeight: 600,
+            textTransform: 'none',
+          }}
+          className='h-10! w-full! bg-linear-to-r! from-[#6961ff]! to-[#b278f4]! sm:w-auto!'
+        >
+          {isEditMode ? 'Save changes' : 'Create employee'}
         </Button>
       </div>
     </form>

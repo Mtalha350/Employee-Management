@@ -1,30 +1,41 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import MainLayout from './layouts/MainLayout';
-import DirectoryPage from './features/Directory/DirectoryPage';
 import AddEmployeePage from './features/AddEmployee/AddEmployeePage';
+import DirectoryPage from './features/Directory/DirectoryPage';
 import EditEmployeePage from './features/EditEmployee/EditEmployeePage';
 import EmployeeDetailPage from './features/EmployeeDetail/EmployeeDetailPage';
+import LoginPage from './features/Auth/LoginPage';
+import MainLayout from './layouts/MainLayout';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path='/' element={<DirectoryPage />} />
+        {/* Public route */}
+        <Route path='/login' element={<LoginPage />} />
 
-          <Route path='/employees/add' element={<AddEmployeePage />} />
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path='/' element={<DirectoryPage />} />
 
-          <Route
-            path='/employees/:employeeId'
-            element={<EmployeeDetailPage />}
-          />
+            <Route path='/employees/add' element={<AddEmployeePage />} />
 
-          <Route
-            path='/employees/:employeeId/edit'
-            element={<EditEmployeePage />}
-          />
+            <Route
+              path='/employees/:employeeId'
+              element={<EmployeeDetailPage />}
+            />
+
+            <Route
+              path='/employees/:employeeId/edit'
+              element={<EditEmployeePage />}
+            />
+          </Route>
         </Route>
+
+        {/* Unknown routes */}
+        <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </BrowserRouter>
   );
