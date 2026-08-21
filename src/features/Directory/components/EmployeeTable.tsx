@@ -28,9 +28,6 @@ interface EmployeeTableProps {
 
 const HEADER_HEIGHT = 56;
 const ROW_HEIGHT = 76;
-const VISIBLE_ROWS = 7;
-
-// const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
 
 const tableHeaderClassName =
   'border-b-1! border-app-divider! px-4! text-[12px]! font-medium! uppercase! tracking-wide! sm:px-6!';
