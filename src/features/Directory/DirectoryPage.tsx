@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -7,37 +7,50 @@ import DirectoryHeader from './components/DirectoryHeader';
 import EmployeeSearch from './components/EmployeeSearch';
 import EmployeeStats from './components/EmployeeStats';
 import EmployeeTable from './components/EmployeeTable';
+import DirectoryPageSkeleton from './components/DirectoryPageSkeleton';
+
+import { EMPLOYEE_DEPARTMENTS } from '../AddEmployee/constants/employeeForm.constants';
 
 import {
   deleteEmployee,
+  hydrateEmployees,
   setDepartmentFilter,
   setSearch,
   setStatusFilter,
 } from '../../store/employees/employeeSlice';
+
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function DirectoryPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { employees, search, departmentFilter, statusFilter } = useAppSelector(
-    (state) => state.employees,
-  );
-
   const [employeeToDeleteId, setEmployeeToDeleteId] = useState<string | null>(
     null,
   );
 
-  const employeeToDelete = useMemo(
-    () =>
-      employees.find((employee) => employee.id === employeeToDeleteId) ?? null,
-    [employees, employeeToDeleteId],
-  );
+  const { employees, search, departmentFilter, statusFilter, status } =
+    useAppSelector((state) => state.employees);
 
-  const departments = useMemo(
-    () => [...new Set(employees.map((employee) => employee.department))].sort(),
-    [employees],
-  );
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      dispatch(hydrateEmployees());
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [dispatch]);
+
+  const employeeToDelete = useMemo(() => {
+    return (
+      employees.find((employee) => employee.id === employeeToDeleteId) ?? null
+    );
+  }, [employees, employeeToDeleteId]);
+
+  const activeDepartmentsCount = useMemo(() => {
+    return new Set(employees.map((employee) => employee.department)).size;
+  }, [employees]);
 
   const filteredEmployees = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -63,15 +76,22 @@ export default function DirectoryPage() {
     });
   }, [employees, search, departmentFilter, statusFilter]);
 
-  const annualPayroll = useMemo(
-    () => employees.reduce((total, employee) => total + employee.salary, 0),
-    [employees],
-  );
+  const annualPayroll = useMemo(() => {
+    return employees.reduce((total, employee) => total + employee.salary, 0);
+  }, [employees]);
+
+  // Loading belongs here, not inside filteredEmployees
+  if (status === 'loading') {
+    return <DirectoryPageSkeleton />;
+  }
 
   const handleConfirmDelete = () => {
-    if (!employeeToDeleteId) return;
+    if (!employeeToDeleteId) {
+      return;
+    }
 
     dispatch(deleteEmployee(employeeToDeleteId));
+
     setEmployeeToDeleteId(null);
 
     toast.success('Employee deleted successfully');
@@ -84,7 +104,7 @@ export default function DirectoryPage() {
 
         <EmployeeStats
           headcount={employees.length}
-          departments={departments.length}
+          departments={activeDepartmentsCount}
           annualPayroll={annualPayroll}
         />
 
@@ -92,7 +112,7 @@ export default function DirectoryPage() {
           search={search}
           department={departmentFilter}
           status={statusFilter}
-          departments={departments}
+          departments={[...EMPLOYEE_DEPARTMENTS]}
           resultCount={filteredEmployees.length}
           totalCount={employees.length}
           onSearchChange={(value) => dispatch(setSearch(value))}
@@ -102,6 +122,7 @@ export default function DirectoryPage() {
 
         <EmployeeTable
           employees={filteredEmployees}
+          totalEmployees={employees.length}
           onDelete={(employeeId) => setEmployeeToDeleteId(employeeId)}
           onEdit={(employeeId) => navigate(`/employees/${employeeId}/edit`)}
           onView={(employeeId) => navigate(`/employees/${employeeId}`)}

@@ -3,24 +3,34 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Employee } from '../../features/Directory/types/employee.types';
 import { getEmployees } from '../../features/Directory/services/employeeStorage';
 
+type EmployeesStatus = 'loading' | 'ready';
+
 interface EmployeesState {
   employees: Employee[];
   search: string;
   departmentFilter: string;
   statusFilter: string;
+  status: EmployeesStatus;
 }
 
 const initialState: EmployeesState = {
-  employees: getEmployees(),
+  employees: [],
   search: '',
   departmentFilter: 'All',
   statusFilter: 'All',
+  status: 'loading',
 };
 
 const employeesSlice = createSlice({
   name: 'employees',
   initialState,
+
   reducers: {
+    hydrateEmployees: (state) => {
+      state.employees = getEmployees();
+      state.status = 'ready';
+    },
+
     addEmployee: (state, action: PayloadAction<Employee>) => {
       state.employees.unshift(action.payload);
     },
@@ -62,6 +72,7 @@ const employeesSlice = createSlice({
 });
 
 export const {
+  hydrateEmployees,
   addEmployee,
   updateEmployee,
   deleteEmployee,

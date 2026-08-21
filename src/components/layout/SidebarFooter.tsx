@@ -23,7 +23,6 @@ export default function SidebarFooter({
 
   return (
     <footer className='border-t border-app-divider p-3'>
-      {/* Theme toggle */}
       <div>
         <ThemeToggle />
       </div>
@@ -40,7 +39,6 @@ export default function SidebarFooter({
         Logout
       </Button>
 
-      {/* User information */}
       <div className='flex items-center gap-3 rounded-xl bg-app-background p-3'>
         <div className='relative shrink-0'>
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-[#6961ff] to-[#b278f4] text-sm font-semibold text-white'>

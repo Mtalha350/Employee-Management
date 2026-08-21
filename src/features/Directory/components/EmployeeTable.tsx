@@ -20,6 +20,7 @@ import EmployeeTableEmptyState from './EmployeeTableEmptyState';
 
 interface EmployeeTableProps {
   employees: Employee[];
+  totalEmployees: number;
   onDelete: (employeeId: string) => void;
   onEdit: (employeeId: string) => void;
   onView: (employeeId: string) => void;
@@ -29,10 +30,10 @@ const HEADER_HEIGHT = 56;
 const ROW_HEIGHT = 76;
 const VISIBLE_ROWS = 7;
 
-const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
+// const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
 
 const tableHeaderClassName =
-  'border-b-0! px-4! text-[12px]! font-medium! uppercase! tracking-wide! sm:px-6!';
+  'border-b-1! border-app-divider! px-4! text-[12px]! font-medium! uppercase! tracking-wide! sm:px-6!';
 
 const tableCellClassName = 'px-4! text-[14px]! sm:px-6!';
 
@@ -51,6 +52,7 @@ const primaryCellSx = {
 
 export default function EmployeeTable({
   employees,
+  totalEmployees,
   onDelete,
   onEdit,
   onView,
@@ -223,7 +225,7 @@ export default function EmployeeTable({
               </TableRow>
             ))
           ) : (
-            <EmployeeTableEmptyState />
+            <EmployeeTableEmptyState isEmptyDirectory={totalEmployees === 0} />
           )}
         </TableBody>
       </Table>
