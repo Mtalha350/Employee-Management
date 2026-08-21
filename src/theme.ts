@@ -1,96 +1,89 @@
 import { createTheme } from '@mui/material/styles';
 
-export const theme = createTheme({
-  palette: {
-    mode: 'dark',
+type AppThemeMode = 'light' | 'dark';
 
-    primary: {
-      main: '#7568ff',
-    },
+export const createAppTheme = (mode: AppThemeMode) =>
+  createTheme({
+    palette: {
+      mode,
 
-    background: {
-      default: '#080b1c',
-      paper: '#15192f',
-    },
-
-    text: {
-      primary: '#f4f5fb',
-      secondary: '#9699af',
-    },
-
-    divider: '#2b2f4b',
-  },
-
-  components: {
-    MuiTextField: {
-      defaultProps: {
-        variant: 'outlined',
+      primary: {
+        main: '#7568ff',
       },
 
-      styleOverrides: {
-        root: ({ theme }) => ({
-          '& .MuiInputBase-input': {
+      background: {
+        default: mode === 'dark' ? '#080b1c' : '#f6f7fb',
+        paper: mode === 'dark' ? '#15192f' : '#ffffff',
+      },
+
+      text: {
+        primary: mode === 'dark' ? '#f4f5fb' : '#171923',
+        secondary: mode === 'dark' ? '#9699af' : '#62677a',
+      },
+
+      divider: mode === 'dark' ? '#2b2f4b' : '#e2e5ec',
+    },
+
+    shape: {
+      borderRadius: 12,
+    },
+
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: (theme) => ({
+          body: {
+            backgroundColor: theme.palette.background.default,
             color: theme.palette.text.primary,
           },
+        }),
+      },
 
-          '& .MuiInputLabel-root': {
-            color: theme.palette.text.primary,
-          },
+      MuiTextField: {
+        defaultProps: {
+          size: 'small',
+          fullWidth: true,
+        },
+      },
 
-          '& .MuiInputLabel-root.Mui-focused': {
-            color: theme.palette.primary.main,
-          },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            borderRadius: 12,
+            backgroundColor: theme.palette.background.paper,
 
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.divider,
-          },
+            '& fieldset': {
+              borderColor: theme.palette.divider,
+            },
 
-          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.text.secondary,
-          },
+            '&:hover fieldset': {
+              borderColor: theme.palette.text.secondary,
+            },
 
-          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
-            {
+            '&.Mui-focused fieldset': {
               borderColor: theme.palette.primary.main,
             },
-        }),
+          }),
+        },
       },
-    },
 
-    MuiSelect: {
-      styleOverrides: {
-        icon: ({ theme }) => ({
-          color: theme.palette.text.primary,
-        }),
+      MuiInputLabel: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            color: theme.palette.text.secondary,
+
+            '&.Mui-focused': {
+              color: theme.palette.primary.main,
+            },
+          }),
+        },
       },
-    },
 
-    MuiMenuItem: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.text.primary,
-
-          '&:hover': {
-            backgroundColor: theme.palette.action.hover,
-          },
-
-          '&.Mui-selected': {
-            backgroundColor: `${theme.palette.primary.main}20`,
-          },
-
-          '&.Mui-selected:hover': {
-            backgroundColor: `${theme.palette.primary.main}30`,
-          },
-        }),
-      },
-    },
-
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
+      MuiPaper: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+          }),
         },
       },
     },
-  },
-});
+  });

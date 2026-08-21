@@ -21,3 +21,27 @@ body {
     sans-serif;
   background: #080b1c;
 }
+
+@theme {
+  --color-app-background: var(--app-background);
+  --color-app-paper: var(--app-paper);
+  --color-app-primary-text: var(--app-text-primary);
+  --color-app-secondary-text: var(--app-text-secondary);
+  --color-app-divider: var(--app-divider);
+}
+
+:root {
+  --app-background: #f6f7fb;
+  --app-paper: #ffffff;
+  --app-text-primary: #171923;
+  --app-text-secondary: #62677a;
+  --app-divider: #e2e5ec;
+}
+
+.dark {
+  --app-background: #080b1c;
+  --app-paper: #15192f;
+  --app-text-primary: #f4f5fb;
+  --app-text-secondary: #9699af;
+  --app-divider: #2b2f4b;
+}

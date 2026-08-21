@@ -20,6 +20,7 @@ import EmployeeTableEmptyState from './EmployeeTableEmptyState';
 
 interface EmployeeTableProps {
   employees: Employee[];
+  totalEmployees: number;
   onDelete: (employeeId: string) => void;
   onEdit: (employeeId: string) => void;
   onView: (employeeId: string) => void;
@@ -29,15 +30,29 @@ const HEADER_HEIGHT = 56;
 const ROW_HEIGHT = 76;
 const VISIBLE_ROWS = 7;
 
-const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
+// const TABLE_HEIGHT = HEADER_HEIGHT + ROW_HEIGHT * VISIBLE_ROWS;
 
 const tableHeaderClassName =
-  'border-b-0! bg-[#15192f]! px-4! text-[12px]! font-medium! uppercase! tracking-wide! text-[#9296ad]! sm:px-6!';
+  'border-b-1! border-app-divider! px-4! text-[12px]! font-medium! uppercase! tracking-wide! sm:px-6!';
 
-const tableCellClassName = 'border-[#2b2f4b]! px-4! text-[14px]! sm:px-6!';
+const tableCellClassName = 'px-4! text-[14px]! sm:px-6!';
+
+const tableHeaderSx = {
+  backgroundColor: 'background.paper',
+  color: 'text.secondary',
+};
+
+const secondaryCellSx = {
+  color: 'text.secondary',
+};
+
+const primaryCellSx = {
+  color: 'text.primary',
+};
 
 export default function EmployeeTable({
   employees,
+  totalEmployees,
   onDelete,
   onEdit,
   onView,
@@ -46,36 +61,46 @@ export default function EmployeeTable({
     <TableContainer
       component={Paper}
       elevation={0}
-      className='mt-6! w-full! overflow-auto! rounded-[20px]! border! border-[#2b2f4b]! bg-[#15192f]!'
-      sx={{
-        height: TABLE_HEIGHT,
-      }}
+      className='bg-app-paper! mt-6! h-147! w-full! overflow-auto! rounded-[20px]! border! border-app-divider!'
     >
       <Table
         stickyHeader
         aria-label='Employee directory table'
-        sx={{
-          minWidth: 850,
-        }}
+        sx={{ minWidth: 850 }}
       >
         <TableHead>
           <TableRow
             sx={{
               height: HEADER_HEIGHT,
+              borderBottom: '1px solid',
+              borderColor: 'divider',
             }}
-            className='border-b! border-[#2b2f4b]!'
           >
-            <TableCell className={tableHeaderClassName}>Employee</TableCell>
+            <TableCell className={tableHeaderClassName} sx={tableHeaderSx}>
+              Employee
+            </TableCell>
 
-            <TableCell className={tableHeaderClassName}>Department</TableCell>
+            <TableCell className={tableHeaderClassName} sx={tableHeaderSx}>
+              Department
+            </TableCell>
 
-            <TableCell className={tableHeaderClassName}>Location</TableCell>
+            <TableCell className={tableHeaderClassName} sx={tableHeaderSx}>
+              Location
+            </TableCell>
 
-            <TableCell className={tableHeaderClassName}>Salary</TableCell>
+            <TableCell className={tableHeaderClassName} sx={tableHeaderSx}>
+              Salary
+            </TableCell>
 
-            <TableCell className={tableHeaderClassName}>Status</TableCell>
+            <TableCell className={tableHeaderClassName} sx={tableHeaderSx}>
+              Status
+            </TableCell>
 
-            <TableCell align='right' className={tableHeaderClassName}>
+            <TableCell
+              align='right'
+              className={tableHeaderClassName}
+              sx={tableHeaderSx}
+            >
               Actions
             </TableCell>
           </TableRow>
@@ -89,8 +114,9 @@ export default function EmployeeTable({
                 hover
                 sx={{
                   height: ROW_HEIGHT,
-                  '&:hover': {
-                    backgroundColor: '#191d36',
+
+                  '& td': {
+                    borderColor: 'divider',
                   },
                 }}
               >
@@ -102,11 +128,11 @@ export default function EmployeeTable({
                     </div>
 
                     <div className='min-w-0'>
-                      <p className='truncate text-sm font-semibold text-[#f4f5fb]'>
+                      <p className='text-app-primary-text truncate text-sm font-semibold'>
                         {employee.name}
                       </p>
 
-                      <p className='mt-0.5 truncate text-xs text-[#9296ad]'>
+                      <p className='text-app-secondary-text mt-0.5 truncate text-xs'>
                         {employee.role}
                       </p>
                     </div>
@@ -114,19 +140,22 @@ export default function EmployeeTable({
                 </TableCell>
 
                 <TableCell
-                  className={`${tableCellClassName} whitespace-nowrap text-[#a5a8bb]!`}
+                  className={`${tableCellClassName} whitespace-nowrap`}
+                  sx={secondaryCellSx}
                 >
                   {employee.department}
                 </TableCell>
 
                 <TableCell
-                  className={`${tableCellClassName} whitespace-nowrap text-[#a5a8bb]!`}
+                  className={`${tableCellClassName} whitespace-nowrap`}
+                  sx={secondaryCellSx}
                 >
                   {employee.location}
                 </TableCell>
 
                 <TableCell
-                  className={`${tableCellClassName} whitespace-nowrap font-semibold! text-[#f4f5fb]!`}
+                  className={`${tableCellClassName} whitespace-nowrap font-semibold!`}
+                  sx={primaryCellSx}
                 >
                   ${employee.salary.toLocaleString()}
                 </TableCell>
@@ -137,14 +166,15 @@ export default function EmployeeTable({
                   <span
                     className={
                       employee.status === 'Active'
-                        ? 'inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400'
-                        : 'inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400'
+                        ? 'inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400'
+                        : 'inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-600 dark:text-amber-400'
                     }
                   >
                     {employee.status}
                   </span>
                 </TableCell>
 
+                {/* Actions */}
                 <TableCell
                   align='right'
                   className={`${tableCellClassName} whitespace-nowrap`}
@@ -154,7 +184,14 @@ export default function EmployeeTable({
                       size='small'
                       aria-label={`View ${employee.name}`}
                       onClick={() => onView(employee.id)}
-                      sx={{ color: '#d9dbe8' }}
+                      sx={{
+                        color: 'text.secondary',
+
+                        '&:hover': {
+                          color: 'text.primary',
+                          backgroundColor: 'action.hover',
+                        },
+                      }}
                     >
                       <VisibilityOutlined fontSize='small' />
                     </IconButton>
@@ -163,7 +200,14 @@ export default function EmployeeTable({
                       size='small'
                       aria-label={`Edit ${employee.name}`}
                       onClick={() => onEdit(employee.id)}
-                      sx={{ color: '#d9dbe8' }}
+                      sx={{
+                        color: 'text.secondary',
+
+                        '&:hover': {
+                          color: 'primary.main',
+                          backgroundColor: 'action.hover',
+                        },
+                      }}
                     >
                       <EditOutlined fontSize='small' />
                     </IconButton>
@@ -172,7 +216,7 @@ export default function EmployeeTable({
                       size='small'
                       aria-label={`Delete ${employee.name}`}
                       onClick={() => onDelete(employee.id)}
-                      sx={{ color: '#ef4444' }}
+                      color='error'
                     >
                       <DeleteOutlineOutlined fontSize='small' />
                     </IconButton>
@@ -181,7 +225,7 @@ export default function EmployeeTable({
               </TableRow>
             ))
           ) : (
-            <EmployeeTableEmptyState />
+            <EmployeeTableEmptyState isEmptyDirectory={totalEmployees === 0} />
           )}
         </TableBody>
       </Table>

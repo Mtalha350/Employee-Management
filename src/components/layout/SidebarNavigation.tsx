@@ -14,7 +14,7 @@ export default function SidebarNavigation({
       className='flex-1 overflow-y-auto px-3 py-6'
       aria-label='Main navigation'
     >
-      <p className='mb-3 px-3 text-[10px] font-semibold uppercase tracking-[1.2px] text-[#62667f]'>
+      <p className='mb-3 px-3 text-[10px] font-semibold uppercase tracking-[1.2px] text-app-secondary-text'>
         Workspace
       </p>
 
@@ -30,18 +30,19 @@ export default function SidebarNavigation({
                 'flex h-11 w-full items-center gap-3 rounded-xl px-3',
                 'text-sm transition-all duration-200',
                 isActive
-                  ? 'bg-[#202441] text-[#f4f5fb]'
-                  : 'text-[#9296ad] hover:bg-[#171b34] hover:text-[#f4f5fb]',
+                  ? 'bg-app-background text-app-primary-text'
+                  : 'text-app-secondary-text hover:bg-app-background hover:text-app-primary-text',
               ].join(' ')
             }
           >
             {({ isActive }) => (
               <>
                 <Icon
-                  sx={{
-                    fontSize: 20,
-                    color: isActive ? '#a89cff' : '#9296ad',
-                  }}
+                  className={
+                    isActive
+                      ? 'h-5! w-5! text-[#7568ff]!'
+                      : 'h-5! w-5! text-app-secondary-text!'
+                  }
                 />
 
                 <span className='font-medium'>{label}</span>

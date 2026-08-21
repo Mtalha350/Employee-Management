@@ -9,19 +9,41 @@ export default function StatCard({ label, value }: StatCardProps) {
   return (
     <Card
       elevation={0}
-      className='rounded-[15px]! border! border-[#2b2f4b]! bg-[#15192f]!'
+      sx={{
+        borderRadius: '15px',
+        border: (theme) => `1px solid ${theme.palette.divider}`,
+        backgroundColor: 'background.paper',
+      }}
     >
-      <CardContent className='p-4! sm:p-5! lg:p-6!'>
+      <CardContent sx={{ p: { xs: 2, sm: 2.5, lg: 3 } }}>
         <Typography
           component='p'
-          className='text-[11px]! font-medium! uppercase! tracking-[0.5px]! text-[#9296ad]! sm:text-[12px]!'
+          sx={{
+            fontSize: {
+              xs: '11px',
+              sm: '12px',
+            },
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            color: 'text.secondary',
+          }}
         >
           {label}
         </Typography>
 
         <Typography
           component='p'
-          className='mt-1! text-[22px]! font-semibold! leading-none! text-[#f4f5fb! sm:text-[25px]!'
+          sx={{
+            mt: 0.5,
+            fontSize: {
+              xs: '22px',
+              sm: '25px',
+            },
+            fontWeight: 600,
+            lineHeight: 1,
+            color: 'text.primary',
+          }}
         >
           {value}
         </Typography>
